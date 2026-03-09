@@ -49,24 +49,15 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
           <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)} className="text-gray-400 hover:bg-white/5">
             <Menu className="h-6 w-6" />
           </Button>
-          
-          {/* مكان اللوجو في الهيدر */}
           <Link href="/earn" className="flex items-center">
-             {/* استبدل رابط الصورة هنا باللوجو الخاص بك */}
-             <img 
-               src="/logo.png" 
-               alt="Mr. Cash Logo" 
-               className="h-8 w-auto object-contain" 
-               onError={(e) => { e.currentTarget.style.display = 'none' }} // لإخفاء الصورة إذا لم تكن موجودة حالياً
-             />
-             <span className="font-black text-xl tracking-tighter italic ml-2">Mr. CASH</span>
+             <span className="font-black text-xl tracking-tighter italic ml-2">Mr. <span className="text-[#10b981]">CASH</span></span>
           </Link>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="bg-[#10b981]/10 border border-[#10b981]/20 px-3 py-1 rounded-full flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
-            <span className="text-sm font-bold text-[#10b981]">{livePoints}</span>
+            <span className="text-sm font-bold text-[#10b981]">{livePoints.toLocaleString()}</span>
           </div>
         </div>
       </header>
@@ -80,12 +71,10 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
       <aside className={`fixed top-0 left-0 h-full w-[280px] bg-[#0a0a0a] z-[80] border-r border-white/5 transition-transform duration-300 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 flex flex-col h-full">
           <div className="flex items-center justify-between mb-8">
-            {/* مكان اللوجو داخل القائمة الجانبية */}
             <div className="flex items-center">
-               <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
-               <span className="font-black text-2xl italic ml-2">Mr. <span className="text-[#10b981]">CASH</span></span>
+               <span className="font-black text-2xl italic">Mr. <span className="text-[#10b981]">CASH</span></span>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} className="text-gray-500 hover:bg-white/5">
+            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} className="text-gray-500">
               <X className="h-5 w-5" />
             </Button>
           </div>
@@ -94,25 +83,16 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
             {menuItems.map((item) => {
               const active = pathname === item.href
               return (
-                <Link 
-                  key={item.name} 
-                  href={item.href} 
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-4 px-4 py-3 rounded-xl font-bold transition-all ${active ? 'bg-[#10b981]/10 text-[#10b981]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
-                >
+                <Link key={item.name} href={item.href} onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-xl font-bold transition-all ${active ? 'bg-[#10b981]/10 text-[#10b981]' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
                   <item.icon className={`w-5 h-5 ${active ? 'text-[#10b981]' : ''}`} />
                   {item.name}
                 </Link>
               )
             })}
-
-            {/* زر الأدمن - يظهر فقط لك كأدمن */}
             {isAdmin && (
-              <Link 
-                href="/admin" 
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-4 px-4 py-3 rounded-xl font-bold text-red-500 transition-all ${pathname === '/admin' ? 'bg-red-500/10' : 'hover:bg-red-500/5'}`}
-              >
+              <Link href="/admin" onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-4 px-4 py-3 rounded-xl font-bold text-red-500 transition-all ${pathname === '/admin' ? 'bg-red-500/10' : 'hover:bg-red-500/5'}`}>
                 <Shield className="w-5 h-5" />
                 Admin Panel
               </Link>
@@ -121,13 +101,10 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
 
           <div className="mt-auto pt-6 border-t border-white/5 space-y-4">
             <div className="text-[10px] text-gray-600 font-bold uppercase tracking-widest px-4">Legal</div>
-            <Link href="/terms" className="flex items-center gap-4 px-4 py-2 text-xs text-gray-400 font-bold hover:text-white transition-colors">
+            <Link href="/terms" className="flex items-center gap-4 px-4 py-2 text-xs text-gray-400 font-bold hover:text-white">
                Terms & Conditions
             </Link>
-            <Button 
-              onClick={() => { logout(); router.push('/login'); }} 
-              className="w-full justify-start gap-4 px-4 py-3 text-gray-500 hover:text-red-500 transition-colors bg-transparent hover:bg-red-500/5"
-            >
+            <Button onClick={() => { logout(); router.push('/login'); }} className="w-full justify-start gap-4 px-4 py-3 text-gray-500 hover:text-red-500 transition-colors bg-transparent">
               <LogOut className="w-5 h-5" />
               Logout
             </Button>
@@ -135,7 +112,10 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="pb-24 pt-2 px-4">{children}</main>
+      {/* التعديل المهم هنا: pb-24 للجوال فقط و md:pb-2 للكمبيوتر */}
+      <main className="pb-24 md:pb-2 pt-2 px-4">
+        {children}
+      </main>
     </div>
   )
 }
